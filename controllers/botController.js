@@ -1,13 +1,11 @@
-const uuid = require('uuid')
-const path = require('path');
-const {Clother} = require('../models/models')
-const ApiError = require('../error/ApiError');
-const bot = require("../botTelegram");
+const TelegramBot = require("node-telegram-bot-api");
+const bot = new TelegramBot(process.env.BOT_TOKEN, {polling: true});
 
 class BotController {
     async send(req, res, next) {
         const {query_id} = req.body;
-
+        console.log(query_id)
+        console.log(111)
         try {
             await bot.answerWebAppQuery(query_id, {
                 type: 'article',
