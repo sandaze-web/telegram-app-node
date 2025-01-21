@@ -6,11 +6,12 @@ const bot = require("../botTelegram");
 
 class BotController {
     async send(req, res, next) {
-        const {queryId, products = [], totalPrice = 0} = req.body;
+        const {query_id, products = [], totalPrice = 0} = req.body;
+
         try {
-            await bot.answerWebAppQuery(queryId, {
+            await bot.answerWebAppQuery(query_id, {
                 type: 'article',
-                id: queryId,
+                id: query_id,
                 title: 'Успешная покупка',
                 input_message_content: {
                     message_text: ` Поздравляю с покупкой, вы приобрели товар на сумму ${totalPrice}, ${products.map(item => item.title).join(', ')}`
