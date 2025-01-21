@@ -6,7 +6,7 @@ const bot = require("../botTelegram");
 
 class BotController {
     async send(req, res, next) {
-        const {query_id, products = [], totalPrice = 0} = req.body;
+        const {query_id} = req.body;
 
         try {
             await bot.answerWebAppQuery(query_id, {
@@ -14,7 +14,7 @@ class BotController {
                 id: query_id,
                 title: 'Успешная покупка',
                 input_message_content: {
-                    message_text: ` Поздравляю с покупкой, вы приобрели товар на сумму ${totalPrice}, ${products.map(item => item.title).join(', ')}`
+                    message_text: ` Поздравляю с покупкой, вы приобрели товар на сумму`
                 }
             })
             return res.status(200).json({});
