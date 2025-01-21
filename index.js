@@ -19,7 +19,7 @@ app.use(express.static(path.resolve(__dirname, 'static')))
 app.use(fileUpload({}))
 app.use('/api', router)
 
-app.use('/api/bot/web-data', async (req, res, next) => {
+app.post('/api/bot/web-data', async (req, res, next) => {
     const {query_id} = req.body;
     console.log(query_id)
     try {
