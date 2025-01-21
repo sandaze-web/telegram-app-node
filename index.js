@@ -8,6 +8,7 @@ const router = require('./routes/index')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 const path = require('path')
 const bot = require("./botTelegram");
+const botController = require('controllers/botController')
 
 const PORT = process.env.PORT || 5000
 
@@ -17,6 +18,24 @@ app.use(express.json())
 app.use(express.static(path.resolve(__dirname, 'static')))
 app.use(fileUpload({}))
 app.use('/api', router)
+
+app.use('/api/bot/web-data', async (req, res, next) => {
+    const {query_id} = req.body;
+    console.log(query_id)
+    try {
+        await bot.answerWebAppQuery(query_id, {
+            type: 'article',
+            id: query_id,
+            title: 'Успешная покупка',
+            input_message_content: {
+                message_text: ` Поздравляю с покупкой, вы приобрели товар на сумму`
+            }
+        })
+        return res.status(200).json({});
+    } catch (e) {
+        return res.status(500).json({})
+    }
+})
 
 // Обработка ошибок, последний Middleware
 app.use(errorHandler)
@@ -30,7 +49,6 @@ const start = async () => {
         console.log(e)
     }
 }
-
 
 bot.on('message', async (msg) => {
     const chatId = msg.chat.id;
@@ -46,7 +64,5 @@ bot.on('message', async (msg) => {
         });
     }
 });
-
-
 
 start()
